@@ -36,13 +36,22 @@ provider:
         - dynamodb: PutItem
         - dynamodb: UpdateItem
         - dynamedb: DeleteItem
-      Resource: 'arn:aws:dynamodb:us-east-1:*:*'
+      Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
-  handler: create.main
-  events:
-    - http:
-        path: notes
-        method: post
+  create:
+    handler: create.main
+    events:
+      - http:
+          path: notes
+          method: post
+          cors: true
+          authorizer: aws_iam
+  get:
+    handler: get.main
+    events:
+      -http:
+        path: notes/{id}
+        method: get
         cors: true
         authorizer: aws_iam
